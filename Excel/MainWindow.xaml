@@ -1,0 +1,383 @@
+﻿<Window x:Class="Wiring.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wiring"
+        xmlns:vm="clr-namespace:Wiring"
+        mc:Ignorable="d"
+        Title="Aplikacja Mounting" WindowState="Maximized">
+
+
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Style.Triggers>
+                <!--<DataTrigger Binding="{Binding SelectedItem.WireStatus, ElementName=listView}" Value="0">
+                    <Setter Property="Background" Value="White" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SelectedItem.WireStatus, ElementName=listView}" Value="1">
+                    <Setter Property="Background" Value="Yellow" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SelectedItem.WireStatus, ElementName=listView}" Value="2">
+                    <Setter Property="Background" Value="LightBlue" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SelectedItem.WireStatus, ElementName=listView}" Value="3">
+                    <Setter Property="Background" Value="LawnGreen" />
+                </DataTrigger>-->
+                <DataTrigger Binding="{Binding Overtime}" Value="True">
+                    <Setter Property="Background" Value="DarkSalmon" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Overtime}" Value="False">
+                    <Setter Property="Background" Value="LawnGreen" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <Window.Resources>
+        <vm:Data x:Key="vm"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid RenderTransformOrigin="0.5,0.5">
+        <Grid.Background>
+            <ImageBrush ImageSource="/JabilMasterBrand_Black_PMS298.png" Opacity="0.1" Stretch="None"/>
+        </Grid.Background>
+        <!-- Define columns for the grid -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="216"/>
+            <ColumnDefinition Width="1686"/>
+            <ColumnDefinition Width="Auto" MinWidth="8"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+
+
+        <ListView x:Name="listView1" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Column="0" Margin="1,116,1676,30" FontSize="15" SelectedIndex="{Binding Path=SelectedIndexValue}" ItemsSource="{Binding Path=Items}" SelectionChanged="listView1_SelectionChanged" Grid.ColumnSpan="2">
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value= "0">
+                            <Setter Property="Background"
+                            Value="#FFFFA500" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="1">
+                            <Setter Property="Background"
+                            Value="Yellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="2">
+                            <Setter Property="Background"
+                            Value="DeepSkyBlue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="3">
+                            <Setter Property="Background"
+                            Value="LawnGreen" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView AllowsColumnReorder="true">
+                    <GridViewColumn Width="300" Header="" DisplayMemberBinding="{Binding Bus}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView x:Name="listView" d:ItemsSource="{d:SampleData ItemCount=5}"  HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Height="848" Margin="6,140,0,0" PreviewMouseLeftButtonUp="listView_PreviewMouseLeftButtonUp" FontSize="13" Width="241" Grid.Column="1" SelectionChanged="listView_SelectionChanged"  >
+
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <!--<Setter Property="Focusable" Value="False" />-->
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value= "0">
+                            <Setter Property="Background"
+                            Value="Orange" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="1">
+                            <Setter Property="Background"
+                            Value="Yellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="2">
+                            <Setter Property="Background"
+                            Value="DeepSkyBlue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="3">
+                            <Setter Property="Background"
+                            Value="LawnGreen" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+
+                <Style TargetType="{x:Type ListView}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="1">
+                            <Setter Property="Background" Value="LightGray" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                          Value= "0">
+                            <Setter Property="Background"
+                          Value="Orange" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                          Value="1">
+                            <Setter Property="Background"
+                          Value="Yellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                          Value="2">
+                            <Setter Property="Background"
+                          Value="DeepSkyBlue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                          Value="3">
+                            <Setter Property="Background"
+                          Value="LawnGreen" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+
+            <ListView.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="-0.0"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.0"/>
+                </TransformGroup>
+            </ListView.RenderTransform>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <TextBlock Text="{Binding Bus}" FontWeight="Bold" />
+                        <TextBlock Text=", no: " />
+                        <TextBlock Text="{Binding Number}" FontWeight="Bold" />
+                        <TextBlock Text=", " />
+                        <TextBlock Text="Nc: " />
+                        <TextBlock Text="{Binding Nc}" FontWeight="Bold" />
+                        <TextBlock Text="" />
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+
+
+        <TextBlock x:Name="HeaderTextBlock" DataContext="{Binding SelectedItem, ElementName=listView, NotifyOnTargetUpdated=True}" Text="{Binding Number, StringFormat=Komponent nr. \{0\}}" VerticalAlignment="Top" RenderTransformOrigin="0.41,0.231" FontSize="32" Margin="218,45,129,0" TargetUpdated="TextBlock_TargetUpdated" Grid.Column="1" Height="43" />
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView, NotifyOnTargetUpdated=True}" Foreground="#FFE346EC" Text="{Binding NameOfCabinet, StringFormat=Szafa: \{0\}}" VerticalAlignment="Top" RenderTransformOrigin="0.41,0.231" FontSize="32" Margin="218,13,492,0" TargetUpdated="TextBlock_TargetUpdated" Height="46" Grid.Column="1" />
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView}" Text="{Binding Descriptions, StringFormat=Opis czynności:\ \{0\}}" RenderTransformOrigin="0.519,0.604" TextWrapping="Wrap" FontSize="24" Margin="1105,196,73,325" Grid.Column="1"/>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView}" Text="{Binding Nc, StringFormat=Nc: \{0\}}" RenderTransformOrigin="0.41,0.231" FontSize="22" Margin="218,90,129,869" Grid.Column="1" TextWrapping="Wrap"/>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView}" Foreground="Brown" Text="{Binding Bus, StringFormat=Szyna: \{0\}}" RenderTransformOrigin="0.41,0.231" FontSize="38" Margin="268,170,750,753" Grid.Column="1"/>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView}" Text="{Binding Box, StringFormat=Kuweta: \{0\}}" RenderTransformOrigin="0.41,0.231" FontSize="32" Margin="962,118,30,812" TextWrapping="WrapWithOverflow" Grid.Column="1"/>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView}" Foreground="#FF141315"  RenderTransformOrigin="0.41,0.231"  TextAlignment="Center" FontSize="38" Margin="1105,0,-76,142" FontWeight="Bold" VerticalAlignment="Bottom" Grid.Column="1" Height="51" Grid.ColumnSpan="3">
+            <TextBlock.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value= "0">
+                            <Setter Property="Text"
+                            Value="Brak potwierdzenia" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="1">
+                            <Setter Property="Text"
+                            Value="Brak potwierdzenia" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="2">
+                            <Setter Property="Text"
+                            Value="Potwierdzono Target" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="3">
+                            <Setter Property="Text"
+                            Value="Potwierdzono Target" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Resources>
+        </TextBlock>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView, StringFormat=N2}" Foreground="Magenta" Text="{Binding Progress, StringFormat=\{0\}%}" TextWrapping="WrapWithOverflow" FontSize="65" Margin="0,-15,12,896" TextDecorations="Underline" HorizontalAlignment="Right" Grid.Column="1" Width="Auto" />
+
+
+        <Label x:Name="labelPotwierdzonoWszystkiePrzewody" Content="Potwierdzono wszytkie przewody!" HorizontalContentAlignment="Center"  HorizontalAlignment="Left" Margin="66,0,0,0" VerticalAlignment="Top" Height="168" Width="1450" Background="#FF05EF09" FontWeight="Bold" FontSize="72" Visibility="Hidden" Grid.Column="1"/>
+
+        <Button x:Name="btnConfirmBoth" DataContext="{Binding SelectedItem, ElementName=listView}"  HorizontalAlignment="Left" Margin="1393,0,0,16" VerticalAlignment="Bottom" Height="121" Width="220" Click="SourceConfirm_Click" FontSize="20" Background="Gainsboro" Grid.Column="1">
+            <Button.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value= "0">
+                            <Setter Property="Content"
+                            Value="Potwierdz wszystkie" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="1">
+                            <Setter Property="Content"
+                            Value="Potwierdz wszystkie" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="2">
+                            <Setter Property="Content"
+                            Value="Potwierdz wszystkie" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}"
+                            Value="3">
+                            <Setter Property="Content"
+                            Value="Odznacz wszystkie" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Image x:Name="image_All" HorizontalAlignment="Left" Height="725" Margin="268,235,0,0" VerticalAlignment="Top" Width="823" OpacityMask="Black" MouseLeftButtonDown="image_Source_GotMouseCapture" Grid.Column="1"/>
+        <TextBlock x:Name="textBlockSet" HorizontalAlignment="Left" Margin="3,37,0,0" TextWrapping="Wrap" Text="Set:" VerticalAlignment="Top" Width="144" Height="25" FontSize="16" FontWeight="Bold"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="2,59,0,0" VerticalAlignment="Top" Width="386" SelectionChanged="comboBox_SelectionChanged" MaxDropDownHeight="Auto" Height="35" FontSize="16" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="3,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="385" Height="25" KeyDown="textBox_KeyDown" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="textBlockLogged" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" FontSize="16" VerticalAlignment="Top" Height="24" Width="209"/>
+        <Button x:Name="buttonLogging" Content="Zaloguj" HorizontalAlignment="Left" Margin="19,28,0,0" VerticalAlignment="Top" Width="112" Click="buttonLogging_Click" Grid.Column="1" Height="20"/>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView}" Foreground="DodgerBlue" Text="{Binding Torque,StringFormat=Moment: \{0\} Nm}" RenderTransformOrigin="0.41,0.231" FontSize="22"  TextAlignment="Left" Margin="400,130,824,820" Grid.Column="1" TextWrapping="Wrap"/>
+        <TextBlock x:Name="textBlockSe2_Kopiuj" HorizontalAlignment="Left" Margin="306,0,0,18" TextWrapping="Wrap" Text="Kliknij zdjęcie aby powiększyć." VerticalAlignment="Bottom" Width="340" Height="28" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
+        <TextBlock x:Name="textBlockSe2_Kopiuj1" HorizontalAlignment="Right" Margin="0,0,0,19" TextWrapping="Wrap" Text="Project created by Jabil Enercon Team." VerticalAlignment="Bottom" Width="302" Height="25" FontSize="15" FontWeight="Bold" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        >
+            <TextBlock.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.LayoutTransform>
+        </TextBlock>
+        <TextBlock x:Name="textBlockSe2_Kopiuj2" HorizontalAlignment="Right" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" Height="22" FontSize="11" FontWeight="Bold" Grid.Column="1" Margin="0,3,199,0"><Run Text="Ver. "/><Run Text="5.0"/><Run Language="pl-pl" Text="2"/><Run Text=" NET 8.0"/></TextBlock>
+
+
+
+        <TextBlock Text="Podaj współrzędną X:"
+           DataContext="{Binding SelectedItem, ElementName=listView}"
+           FontSize="15"
+           FontWeight="Bold"
+           Margin="1020,0,0,60"
+           VerticalAlignment="Bottom"
+           HorizontalAlignment="Left"
+           Grid.Column="1">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+
+        <TextBox x:Name="textBox1"
+         DataContext="{Binding SelectedItem, ElementName=listView}"
+         Text="{Binding X, StringFormat=\{0\}}"
+         Grid.Column="1"
+         HorizontalAlignment="Left"
+         Margin="1020,0,0,15"
+         TextWrapping="Wrap"
+         VerticalAlignment="Bottom"
+         Width="168"
+         Height="36">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}" Value="3">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+
+        <TextBlock Text="Podaj współrzędną Y:"
+           DataContext="{Binding SelectedItem, ElementName=listView}"
+           FontSize="15"
+           FontWeight="Bold"
+           Margin="1200,0,0,60"
+           VerticalAlignment="Bottom"
+           HorizontalAlignment="Left"
+           Grid.Column="1">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+
+        <TextBox x:Name="textBox2"
+         DataContext="{Binding SelectedItem, ElementName=listView}"
+         Text="{Binding Y, StringFormat=\{0\}}"
+         Grid.Column="1"
+         HorizontalAlignment="Left"
+         Margin="1200,0,0,15"
+         TextWrapping="Wrap"
+         VerticalAlignment="Bottom"
+         Width="160"
+         Height="36">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding WireStatus}" Value="3">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <TextBlock Text="{Binding SelectedItem.IsCoordinatesRequired, ElementName=listView}"
+           FontSize="30"
+           Foreground="Red"
+           Margin="700,94,0,0"
+           VerticalAlignment="Bottom"
+           HorizontalAlignment="Left" Grid.Column="1" Visibility="Hidden"/>
+
+        <Button Visibility="Hidden" Content="Dodaj swoje uwagi:" HorizontalAlignment="Left" Margin="268,0,0,10" VerticalAlignment="Bottom" Click="Button_Click_1" Width="158" Grid.Column="1" Height="32"/>
+        <TextBlock DataContext="{Binding SelectedItem, ElementName=listView, StringFormat=N2}" Foreground="Black" Text="{Binding TimeForExecuting, StringFormat=\\\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55"  Margin="700,-15,0,688" HorizontalAlignment="Left" Grid.Column="1" />
+        <TextBlock Foreground="Black" Text="{Binding LabelValue, StringFormat=\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55" Margin="0,-16,985,632" HorizontalAlignment="Right" Grid.Column="1"/>
+
+        <TextBlock Foreground="Black" Text="{Binding TotalExpectedTime, StringFormat=\\\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55"  Margin="1170,-15,0,688" HorizontalAlignment="Left" Grid.Column="1" />
+        <TextBlock Foreground="Black" Text="{Binding TotalTime, StringFormat=\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55" Margin="0,-16,525,632" HorizontalAlignment="Right" Grid.Column="1" />
+
+    </Grid>
+</Window>

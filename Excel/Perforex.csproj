@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Bezpiecznik-nadpradowy-Legrand-RX3-B20A-3P-419170.ico</ApplicationIcon>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="1.png" />
+    <None Remove="Bezpiecznik-nadpradowy-Legrand-RX3-B20A-3P-419170.ico" />
+    <None Remove="Images\2.png" />
+    <None Remove="JabilMasterBrand_Black_PMS298.png" />
+    <None Remove="zdjęcie czytnika.png" />
+    <None Remove="Zrzut ekranu 2024-11-10 172317.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.*" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="8.1.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="8.1.0" />
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="8.1.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.0" />
+    <PackageReference Include="System.ServiceModel.Security" Version="6.0.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Bezpiecznik-nadpradowy-Legrand-RX3-B20A-3P-419170.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="JabilMasterBrand_Black_PMS298.png" />
+    <Resource Include="zdjęcie czytnika.png" />
+    <Resource Include="Zrzut ekranu 2024-11-10 172317.png" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="RMDIR &quot;$(TargetDir)de/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)es/&quot; /S /Q &#xD;&#xA;RMDIR &quot;$(TargetDir)fr/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)it/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)ja/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)ko/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)ru/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)tr/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)pt-BR/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)cs/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)zh-Hans/&quot; /S /Q&#xD;&#xA;RMDIR &quot;$(TargetDir)zh-Hant/&quot; /S /Q" />
+  </Target>
+</Project>
