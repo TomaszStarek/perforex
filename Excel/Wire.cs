@@ -29,6 +29,11 @@ namespace Wiring
         public string X { get; set; } = "";
         public string Y { get; set; } = "";
 
+        public string hostname { get; set; } = "";
+        public string program { get; set; } = "";
+        public string job { get; set; } = "";
+        public bool IsCameraNeeded { get; set; } = false;
+
         public string DtSource { get; set; } = "";
         public string WireEndTerminationSource { get; set; } = "";
         public string DtTarget { get; set; } = "";

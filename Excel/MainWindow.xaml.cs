@@ -180,11 +180,13 @@ namespace Wiring
                                 _wire.Box = dataRow.Cell(6).Value.GetText();
 
                                 _wire.TimeForExecuting = ParseFromStringToDouble(dataRow.Cell(7).Value.GetText());
-                                var sti = dataRow.Cell(9).Value.GetText().Trim();
-                                var kambo = _wire.IsCoordinatesRequired;
-                                _wire.IsCoordinatesRequired = dataRow.Cell(9).Value.GetText().Trim().Equals("x", StringComparison.OrdinalIgnoreCase);
 
-
+                                //  _wire.IsCoordinatesRequired = dataRow.Cell(9).Value.GetText().Trim().Equals("x", StringComparison.OrdinalIgnoreCase);
+                                _wire.hostname = dataRow.Cell(9).Value.GetText();
+                                _wire.program = dataRow.Cell(10).Value.GetText();
+                                _wire.job = dataRow.Cell(11).Value.GetText();
+                                if (_wire.hostname.Length > 0 && _wire.program.Length > 0 && _wire.job.Length > 0)
+                                    _wire.IsCameraNeeded = true;
                                 //_wire.DtSource = dataRow.Cell(4).Value.GetText();
                                 //_wire.WireEndDimensionSource = dataRow.Cell(7).Value.GetText();
                                 //_wire.WireEndTerminationSource = dataRow.Cell(6).Value.GetText();
@@ -1029,6 +1031,31 @@ namespace Wiring
             if (selectedWire != null)
             {
 
+            }
+        }
+
+        private async void CameraTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedWire = listView.SelectedItem as Wire;
+
+            if (selectedWire == null)
+            {
+                return;
+                // Do something with the selected wire
+                // MessageBox.Show($"Selected Wire: {bus}, {number}");
+            }
+
+            try
+            {
+                bool result = await Camera.Checker(selectedWire.hostname, selectedWire.program, selectedWire.job);
+                MessageBox.Show(result ? "Kamera została pomyślnie wyzwolona!" : "Błąd podczas wyzwalania kamery.",
+                                "Wynik",
+                                MessageBoxButton.OK,
+                                result ? MessageBoxImage.Information : MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

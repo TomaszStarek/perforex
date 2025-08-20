@@ -267,104 +267,6 @@
         <TextBlock x:Name="textBlockSe2_Kopiuj2" HorizontalAlignment="Right" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" Height="22" FontSize="11" FontWeight="Bold" Grid.Column="1" Margin="0,3,199,0"><Run Text="Ver. "/><Run Text="5.0"/><Run Language="pl-pl" Text="2"/><Run Text=" NET 8.0"/></TextBlock>
 
 
-
-        <TextBlock Text="Podaj współrzędną X:"
-           DataContext="{Binding SelectedItem, ElementName=listView}"
-           FontSize="15"
-           FontWeight="Bold"
-           Margin="1020,0,0,60"
-           VerticalAlignment="Bottom"
-           HorizontalAlignment="Left"
-           Grid.Column="1">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-
-
-        <TextBox x:Name="textBox1"
-         DataContext="{Binding SelectedItem, ElementName=listView}"
-         Text="{Binding X, StringFormat=\{0\}}"
-         Grid.Column="1"
-         HorizontalAlignment="Left"
-         Margin="1020,0,0,15"
-         TextWrapping="Wrap"
-         VerticalAlignment="Bottom"
-         Width="168"
-         Height="36">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="false">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding WireStatus}" Value="3">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-
-
-        <TextBlock Text="Podaj współrzędną Y:"
-           DataContext="{Binding SelectedItem, ElementName=listView}"
-           FontSize="15"
-           FontWeight="Bold"
-           Margin="1200,0,0,60"
-           VerticalAlignment="Bottom"
-           HorizontalAlignment="Left"
-           Grid.Column="1">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-
-
-        <TextBox x:Name="textBox2"
-         DataContext="{Binding SelectedItem, ElementName=listView}"
-         Text="{Binding Y, StringFormat=\{0\}}"
-         Grid.Column="1"
-         HorizontalAlignment="Left"
-         Margin="1200,0,0,15"
-         TextWrapping="Wrap"
-         VerticalAlignment="Bottom"
-         Width="160"
-         Height="36">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsCoordinatesRequired}" Value="false">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding WireStatus}" Value="3">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-
         <TextBlock Text="{Binding SelectedItem.IsCoordinatesRequired, ElementName=listView}"
            FontSize="30"
            Foreground="Red"
@@ -378,6 +280,23 @@
 
         <TextBlock Foreground="Black" Text="{Binding TotalExpectedTime, StringFormat=\\\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55"  Margin="1170,-15,0,688" HorizontalAlignment="Left" Grid.Column="1" />
         <TextBlock Foreground="Black" Text="{Binding TotalTime, StringFormat=\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55" Margin="0,-16,525,632" HorizontalAlignment="Right" Grid.Column="1" />
+        <Button Content="Wyzwól kamerę"
+                DataContext="{Binding SelectedItem, ElementName=listView}"
+                HorizontalAlignment="Left" Margin="1099,0,0,20" 
+                VerticalAlignment="Bottom" Height="122" Width="210" 
+                Click="CameraTrigger_Click" FontSize="20" 
+                Background="Gainsboro" Grid.Column="1">
+            <Button.Style>
+                <Style TargetType="Button">
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsCameraNeeded}" Value="true">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            </Button.Style>
+        </Button>
 
     </Grid>
 </Window>
