@@ -1047,7 +1047,7 @@ namespace Wiring
 
             try
             {
-                bool result = await Camera.Checker(selectedWire.hostname, selectedWire.program, selectedWire.job);
+                bool result = await Camera.Checker(selectedWire.hostname, selectedWire.program, selectedWire.job, selectedWire.NameOfCabinet + "--" + Data.SetNumber);
                 MessageBox.Show(result ? "Kamera została pomyślnie wyzwolona!" : "Błąd podczas wyzwalania kamery.",
                                 "Wynik",
                                 MessageBoxButton.OK,

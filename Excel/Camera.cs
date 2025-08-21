@@ -13,7 +13,7 @@ namespace Wiring
 {
     public class Camera
     {
-        public static async Task<bool> Checker(string hostname, string program, string jobId)
+        public static async Task<bool> Checker(string hostname, string program, string jobId, string NazwaDoLogu)
         {
             //
             // ------------------------------
@@ -26,11 +26,11 @@ namespace Wiring
             using var http = new HttpClient
             {
                 BaseAddress = new Uri(baseUrl),
-                Timeout = TimeSpan.FromSeconds(30)
+                Timeout = TimeSpan.FromSeconds(60)
             };
 
             // Ensure output directory
-            var outputDir = Path.Combine(AppContext.BaseDirectory, "output");
+            var outputDir = Path.Combine(AppContext.BaseDirectory, "zdjecia_z_kamery");
             Directory.CreateDirectory(outputDir);
 
             // Shared JSON options: case-insensitive + custom DateTime converter + pretty print for files
@@ -76,93 +76,94 @@ namespace Wiring
             }
 
             // 3) doing the jobs
-
-                using (var execResponse = await http.PostAsync(
-                    "programs/0/execute",
-                    new StringContent($"{{\"job_id\":\"{jobId}\"}}", Encoding.UTF8, "application/json")))
+            using (var execResponse = await http.PostAsync(
+                "programs/0/execute",
+                new StringContent($"{{\"job_id\":\"{jobId}\"}}", Encoding.UTF8, "application/json")))
+            {
+                try
                 {
-                    try
+                    execResponse.EnsureSuccessStatusCode();
+
+                    // Read raw JSON once (so we can both save it and deserialize from it)
+                    var rawJson = await execResponse.Content.ReadAsStringAsync();
+
+                    // Deserialize to strong types
+                    var result = JsonSerializer.Deserialize<ProgramJob>(rawJson, jsonOptions);
+
+                    // Remove "execution_image" from each job's execution
+                    if (result?.JobExecution is not null) result.JobExecution.ExecutionImage = null;
+
+                    string executionResultLabel = result?.JobExecution?.ExecutionResult switch
                     {
-                        execResponse.EnsureSuccessStatusCode();
+                        1 => "NieTrenowane",
+                        2 => "Pass",
+                        3 => "Fail",
+                        4 => "NieZnaleziono",
+                        5 => "NieUkonczono",
+                        _ => "Inne"
+                    };
 
-                        // Read raw JSON once (so we can both save it and deserialize from it)
-                        var rawJson = await execResponse.Content.ReadAsStringAsync();
+                    var baseName = NazwaDoLogu + "--" + executionResultLabel + "--" + DateTime.Now.ToString("yyyyMMdd-HHmmssfff", CultureInfo.InvariantCulture);
+                    baseName = SanitizeFileName(baseName);
 
-                        // Deserialize to strong types
-                        var result = JsonSerializer.Deserialize<ProgramJob>(rawJson, jsonOptions);
-
-                        // Remove "execution_image" from each job's execution
-                        if (result?.JobExecution is not null) result.JobExecution.ExecutionImage = null;
-
-                        string executionResultLabel = result?.JobExecution?.ExecutionResult switch
-                        {
-                            1 => "NieTrenowane",
-                            2 => "Pass",
-                            3 => "Fail",
-                            4 => "NieZnaleziono",
-                            5 => "NieUkonczono",
-                            _ => "Inne"
-                        };
-
-                        var baseName = result?.JobName + "--" + executionResultLabel + "--" + DateTime.Now.ToString("yyyyMMdd-HHmmssfff", CultureInfo.InvariantCulture);
-                        baseName = SanitizeFileName(baseName);
-
+                    if (result?.JobExecution?.ExecutionResult != 2)
+                    {
                         // Paths for outputs
                         var typedJsonPath = Path.Combine(outputDir, $"{baseName}.json");
 
                         // Save TYPED JSON (round-tripped through our models; dates preserved as "yyyy-MM-dd HH:mm:ss")
                         var typedJson = JsonSerializer.Serialize(result, jsonOptions);
                         await File.WriteAllTextAsync(typedJsonPath, typedJson, Encoding.UTF8);
-
-                        result = JsonSerializer.Deserialize<ProgramJob>(rawJson, jsonOptions);
-
                         Console.WriteLine();
                         Console.WriteLine("Saved:");
                         Console.WriteLine($" - Typed JSON: {typedJsonPath}");
+                    }
 
-                        Console.WriteLine($"Job: {result?.JobName} ({result?.JobId})");
+                    result = JsonSerializer.Deserialize<ProgramJob>(rawJson, jsonOptions);
 
-                        if (result?.JobExecution is not null)
+                    Console.WriteLine(NazwaDoLogu);
+                    Console.WriteLine($"Job: {result?.JobName} ({result?.JobId})");
+
+                    if (result?.JobExecution is not null)
+                    {
+                        Console.WriteLine($"  Result         : {result.JobExecution.ExecutionResult}");
+                        Console.WriteLine($"  Start          : {result.JobExecution.ExecutionStartTime}");
+                        Console.WriteLine($"  End            : {result.JobExecution.ExecutionEndTime}");
+                        Console.WriteLine($"  Time (units?)  : {result.JobExecution.ExecutionTime}");
+
+                        // Save image if present
+                        if (!string.IsNullOrWhiteSpace(result.JobExecution.ExecutionImage))
                         {
-                            Console.WriteLine($"  Result         : {result.JobExecution.ExecutionResult}");
-                            Console.WriteLine($"  Start          : {result.JobExecution.ExecutionStartTime}");
-                            Console.WriteLine($"  End            : {result.JobExecution.ExecutionEndTime}");
-                            Console.WriteLine($"  Time (units?)  : {result.JobExecution.ExecutionTime}");
+                            var pathWithoutExt = Path.Combine(outputDir, baseName);
 
-                            // Save image if present
-                            if (!string.IsNullOrWhiteSpace(result.JobExecution.ExecutionImage))
+                            try
                             {
-                                var pathWithoutExt = Path.Combine(outputDir, baseName);
-
-                                try
-                                {
-                                    var savedPath = SaveImageFromBase64(result.JobExecution.ExecutionImage!, pathWithoutExt);
-                                    Console.WriteLine($"  Image saved    : {savedPath}");
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"  Image save failed: {ex.Message}");
-                                }
+                                var savedPath = SaveImageFromBase64(result.JobExecution.ExecutionImage!, pathWithoutExt);
+                                Console.WriteLine($"  Image saved    : {savedPath}");
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                Console.WriteLine("  No image data.");
+                                Console.WriteLine($"  Image save failed: {ex.Message}");
                             }
                         }
-                        if (result?.JobExecution?.ExecutionResult != 2)
+                        else
                         {
-                            return false;
+                            Console.WriteLine("  No image data.");
                         }
                     }
-                    catch (Exception ex)
+                    if (result?.JobExecution?.ExecutionResult != 2)
                     {
-                        ErrorHandling(ex, outputDir);
-                        EndJob(http, outputDir);
                         return false;
                     }
                 }
-            
-            EndJob(http, outputDir);
+                catch (Exception ex)
+                {
+                    ErrorHandling(ex, outputDir);
+                    //EndJob(http, outputDir);
+                    return false;
+                }
+            }
+            //EndJob(http, outputDir);
             return true;
         }
         // ------------------------------
