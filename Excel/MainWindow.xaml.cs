@@ -1061,7 +1061,8 @@ namespace Wiring
             Camera_button.Content = "poczekaj na wynik";
             try
             {
-                bool result = await Camera.Checker(selectedWire.hostname, selectedWire.program, selectedWire.job, selectedWire.NameOfCabinet + "--" + Data.SetNumber);
+                selectedWire.CameraResult = await Camera.Checker(selectedWire.hostname, selectedWire.program, selectedWire.job, selectedWire.NameOfCabinet + "--" + Data.SetNumber);
+                RefreshList(listView);
                 //MessageBox.Show(result ? "Kamera została pomyślnie wyzwolona!" : "Błąd podczas wyzwalania kamery.",
                 //                "Wynik",
                 //                MessageBoxButton.OK,
