@@ -168,8 +168,8 @@ namespace Wiring
                 using (StreamWriter sw = new StreamWriter($"{sciezka}log.txt", true))
                 {
                     var computerName = System.Environment.MachineName.ToUpper();
-                    if(wire.IsCoordinatesRequired)
-                        sw.WriteLine($"M;{computerName};{wire.Start.ToString("yyyy-MM-dd HH:mm:ss")};status:{wire.WireStatus};numer:{wire.Number};{wire.Nc};czash:{Math.Round(wire.HandlingTime,2)};czasn:{Math.Round(wire.Seconds,2)};data_zakonczenia:{wire.DateOfFinish.ToString("yyyy-MM-dd HH:mm:ss")};{wire.MadeBy};{wire.Progress}%;X={wire.X},Y={wire.Y}");
+                    if(wire.IsCameraNeeded)
+                        sw.WriteLine($"M;{computerName};{wire.Start.ToString("yyyy-MM-dd HH:mm:ss")};status:{wire.WireStatus};numer:{wire.Number};{wire.Nc};czash:{Math.Round(wire.HandlingTime,2)};czasn:{Math.Round(wire.Seconds,2)};data_zakonczenia:{wire.DateOfFinish.ToString("yyyy-MM-dd HH:mm:ss")};{wire.MadeBy};{wire.Progress}%;CameraResult={wire.CameraResult}");
                     else
                         sw.WriteLine($"M;{computerName};{wire.Start.ToString("yyyy-MM-dd HH:mm:ss")};status:{wire.WireStatus};numer:{wire.Number};{wire.Nc};czash:{Math.Round(wire.HandlingTime, 2)};czasn:{Math.Round(wire.Seconds, 2)};data_zakonczenia:{wire.DateOfFinish.ToString("yyyy-MM-dd HH:mm:ss")};{wire.MadeBy};{wire.Progress}%");
                 }
@@ -179,6 +179,7 @@ namespace Wiring
                 MessageBox.Show(iox.Message);
             }
         }
+
 
         public static void SaveComment(string NameOfCabinet, Wire wire)
         {

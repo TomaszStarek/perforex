@@ -280,7 +280,8 @@
 
         <TextBlock Foreground="Black" Text="{Binding TotalExpectedTime, StringFormat=\\\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55"  Margin="1170,-15,0,688" HorizontalAlignment="Left" Grid.Column="1" />
         <TextBlock Foreground="Black" Text="{Binding TotalTime, StringFormat=\{0\}s}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55" Margin="0,-16,525,632" HorizontalAlignment="Right" Grid.Column="1" />
-        <Button Content="Wyzwól kamerę"
+        <Button x:Name="Camera_button"
+                Content="Wyzwól kamerę"
                 DataContext="{Binding SelectedItem, ElementName=listView}"
                 HorizontalAlignment="Left" Margin="1099,0,0,20" 
                 VerticalAlignment="Bottom" Height="122" Width="210" 
@@ -288,15 +289,16 @@
                 Background="Gainsboro" Grid.Column="1">
             <Button.Style>
                 <Style TargetType="Button">
-                <Setter Property="Visibility" Value="Hidden"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsCameraNeeded}" Value="true">
-                        <Setter Property="Visibility" Value="Visible"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCameraNeeded}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
             </Button.Style>
         </Button>
+        <TextBlock x:Name="CameraResult_textbox" DataContext="{Binding SelectedItem, ElementName=listView, StringFormat=N2}" Foreground="Black" Text="{Binding CameraResult, StringFormat=Kamera:\{0\}}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55"  Margin="721,900,0,-180" HorizontalAlignment="Left" Grid.Column="1" />
 
     </Grid>
 </Window>

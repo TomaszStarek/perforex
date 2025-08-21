@@ -33,6 +33,7 @@ namespace Wiring
         public string program { get; set; } = "";
         public string job { get; set; } = "";
         public bool IsCameraNeeded { get; set; } = false;
+        public bool CameraResult { get; set; } = false;
 
         public string DtSource { get; set; } = "";
         public string WireEndTerminationSource { get; set; } = "";

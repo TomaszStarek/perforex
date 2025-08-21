@@ -979,8 +979,9 @@ namespace Wiring
                 string number = selectedWire.Number;
                 // Add more properties as needed
 
+
                 // Do something with the selected wire
-               // MessageBox.Show($"Selected Wire: {bus}, {number}");
+                // MessageBox.Show($"Selected Wire: {bus}, {number}");
             }
             FocusListViewOnFirstElement();
             RefreshList(listView);
@@ -1011,7 +1012,18 @@ namespace Wiring
                 // Do something with the selected wire
                 // MessageBox.Show($"Selected Wire: {bus}, {number}");
             }
-
+            if (selectedWire.IsCameraNeeded)
+            {
+                // Kamera potrzebna → pokazujemy CameraTrigger, ukrywamy Confirm
+                btnConfirmBoth.Visibility = Visibility.Collapsed;
+                CameraResult_textbox.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Kamera niepotrzebna → od razu tylko Confirm
+                btnConfirmBoth.Visibility = Visibility.Visible;
+                CameraResult_textbox.Visibility = Visibility.Collapsed;
+            }
             selectedWire.Start = DateTime.Now;
            // myData.ListOfImportedCabinets[_findedCabinetIndex][index].Start = DateTime.Now; //sprawdzanie statusu wykonania przewodu
         }
@@ -1045,18 +1057,24 @@ namespace Wiring
                 // MessageBox.Show($"Selected Wire: {bus}, {number}");
             }
 
+            Application.Current.MainWindow.IsEnabled = false;
+            Camera_button.Content = "poczekaj na wynik";
             try
             {
                 bool result = await Camera.Checker(selectedWire.hostname, selectedWire.program, selectedWire.job, selectedWire.NameOfCabinet + "--" + Data.SetNumber);
-                MessageBox.Show(result ? "Kamera została pomyślnie wyzwolona!" : "Błąd podczas wyzwalania kamery.",
-                                "Wynik",
-                                MessageBoxButton.OK,
-                                result ? MessageBoxImage.Information : MessageBoxImage.Error);
+                //MessageBox.Show(result ? "Kamera została pomyślnie wyzwolona!" : "Błąd podczas wyzwalania kamery.",
+                //                "Wynik",
+                //                MessageBoxButton.OK,
+                //                result ? MessageBoxImage.Information : MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            Camera_button.Content = "Wyzwól kamerę";
+            Application.Current.MainWindow.IsEnabled = true;
+            btnConfirmBoth.Visibility = Visibility.Visible;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
