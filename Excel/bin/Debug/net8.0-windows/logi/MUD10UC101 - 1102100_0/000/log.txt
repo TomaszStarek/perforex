@@ -1,0 +1,1 @@
+M;PLKWIM0LLTSC015;2025-08-21 13:13:17;status:3;numer:10;N/A;czash:12,1;czasn:1,6;data_zakonczenia:2025-08-21 13:13:19;;1,54%;CameraResult=True
