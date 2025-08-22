@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wiring"
         xmlns:vm="clr-namespace:Wiring"
+        xmlns:conv="clr-namespace:Wiring"
         mc:Ignorable="d"
         Title="Aplikacja Mounting" WindowState="Maximized">
 
@@ -37,6 +38,7 @@
     <Window.Resources>
         <vm:Data x:Key="vm"/>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <conv:CameraResultToTextConverter x:Key="CameraResultToTextConverter"/>
     </Window.Resources>
     <Grid RenderTransformOrigin="0.5,0.5">
         <Grid.Background>
@@ -298,7 +300,15 @@
                 </Style>
             </Button.Style>
         </Button>
-        <TextBlock x:Name="CameraResult_textbox" DataContext="{Binding SelectedItem, ElementName=listView, StringFormat=N2}" Foreground="Black" Text="{Binding CameraResult, StringFormat=Kamera:\{0\}}" TextWrapping="WrapWithOverflow" RenderTransformOrigin="0.41,0.231" FontSize="55"  Margin="721,900,0,-180" HorizontalAlignment="Left" Grid.Column="1" />
-
+        <TextBlock x:Name="CameraResult_textbox" 
+           DataContext="{Binding SelectedItem, ElementName=listView}" 
+           Foreground="Black" 
+           Text="{Binding CameraResult, Converter={StaticResource CameraResultToTextConverter}}" 
+           TextWrapping="WrapWithOverflow" 
+           RenderTransformOrigin="0.41,0.231" 
+           FontSize="55" 
+           Margin="721,900,0,-180" 
+           HorizontalAlignment="Left" 
+           Grid.Column="1" />
     </Grid>
 </Window>
