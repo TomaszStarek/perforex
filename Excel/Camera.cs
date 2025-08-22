@@ -103,7 +103,7 @@ namespace Wiring
                         _ => "Inne"
                     };
 
-                    var baseName = NazwaDoLogu + "--" + executionResultLabel + "--" + DateTime.Now.ToString("yyyyMMdd-HHmmssfff", CultureInfo.InvariantCulture);
+                    var baseName = NazwaDoLogu + "--" + result?.JobName + "--" + executionResultLabel + "--" + DateTime.Now.ToString("yyyyMMdd-HHmmssfff", CultureInfo.InvariantCulture);
                     baseName = SanitizeFileName(baseName);
 
                     if (result?.JobExecution?.ExecutionResult != 2)

@@ -152,9 +152,9 @@ namespace Wiring
             try
             {
                 //           \\KWIPUBV04\Procesy$\Enercon\Wiring\LOGI_SW_SM
-             //   string sciezka = $"{AppDomain.CurrentDomain.BaseDirectory}/logi/{NameOfCabinet}/{Data.SetNumber}/";      //definiowanieścieżki do której zapisywane logi
+                string sciezka = $"{AppDomain.CurrentDomain.BaseDirectory}/logi/{NameOfCabinet}/{Data.SetNumber}/";      //definiowanieścieżki do której zapisywane logi
                                                                                                                          //   string sciezka = @$"\\KWIPUBV01\Procesy$\Enercon\Wiring\LOGI_SW_SM\logi\{NameOfCabinet}\{Data.SetNumber}\";
-                string sciezka = @$"D:/PERFOREX_MANUAL/logi/{NameOfCabinet}/{Data.SetNumber}/";
+                //string sciezka = @$"D:/PERFOREX_MANUAL/logi/{NameOfCabinet}/{Data.SetNumber}/";
 
                 DateTime stop = DateTime.Now;
                 if (Directory.Exists(sciezka))       //sprawdzanie czy sciezka istnieje
